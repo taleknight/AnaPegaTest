@@ -1,7 +1,6 @@
 package br.ufpb.dcx.aps.escalonador;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RoundRobin extends FachadaEscalonador {
@@ -23,11 +22,13 @@ public class RoundRobin extends FachadaEscalonador {
 					+ "Processos: {Fila: " + filaProcessos.toString() + "};"  
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
+		
 		}else if(filaProcessos.size() == 1 && tick > 0) {
 			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
 					+ "Processos: {Rodando: " + filaProcessos.get(0) + "};"
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
+		
 		}else if(filaProcessos.size() == 2 && tick < 4) {
 			
 			if(processoEsperando.size() == 0){
@@ -43,7 +44,6 @@ public class RoundRobin extends FachadaEscalonador {
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
 			
-		
 		}else if(filaProcessos.size() == 2 && tick > 3 && tick < 7) {
 			if(processoEsperando.size() == 1) {
 				processoEsperando.remove(processoEsperando.get(0));
@@ -64,11 +64,58 @@ public class RoundRobin extends FachadaEscalonador {
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
 		
+		}else if(filaProcessos.size() == 3 && tick > 0 && tick < 4){
+			if(processoEsperando.size() == 0){
+				processoEsperando.add(filaProcessos.get(1));
+				processoEsperando.add(filaProcessos.get(2));
+			}else if(processoEsperando.size() == 2) {
+				processoEsperando.remove(processoEsperando.get(0));
+				processoEsperando.remove(processoEsperando.get(0));
+				processoEsperando.add(filaProcessos.get(1));
+				processoEsperando.add(filaProcessos.get(2));
+				}
+			
+			return	"Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(0) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+			
+		}else if(filaProcessos.size() == 3 && tick > 3 && tick < 7){
+			if(processoEsperando.size() == 2 && processoEsperando.get(0)=="P2" && processoEsperando.get(1)=="P3"){
+				processoEsperando.remove(processoEsperando.get(0));
+				processoEsperando.add(filaProcessos.get(0));
+			}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(1) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+			
+		}else if(filaProcessos.size() == 3 && tick > 6 && tick < 10){
+			if(processoEsperando.size() == 2 && processoEsperando.get(0)=="P3" && processoEsperando.get(1)=="P1"){
+				processoEsperando.remove(processoEsperando.get(0));
+				processoEsperando.add(filaProcessos.get(1));
+			}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(2) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+		
+		}else if(filaProcessos.size() == 3 && tick == 10){
+			if(processoEsperando.size() == 2){
+				processoEsperando.remove(processoEsperando.get(0));
+				processoEsperando.add(filaProcessos.get(2));
+			}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(0) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+		
 		}else if(filaProcessos.size() == 0 && tick == 4) {
 			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
 					+ "Processos: {Rodando: "+ processoRemovido +"};"
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
+		
 		}else if(filaProcessos.size() == 0) {
 			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
 					+ "Processos: {};"
