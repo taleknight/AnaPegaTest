@@ -1,10 +1,12 @@
 package br.ufpb.dcx.aps.escalonador;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RoundRobin extends FachadaEscalonador {
 
+	private List<String> processoEsperando = new ArrayList<String>();
 	private List<String> filaProcessos = new ArrayList<String>();
 	private int quantum = 3;
 	private int tick;
@@ -26,6 +28,42 @@ public class RoundRobin extends FachadaEscalonador {
 					+ "Processos: {Rodando: " + filaProcessos.get(0) + "};"
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
+		}else if(filaProcessos.size() == 2 && tick < 4) {
+			
+			if(processoEsperando.size() == 0){
+				processoEsperando.add(filaProcessos.get(1));
+			
+			}else if(processoEsperando.size() == 1) {
+				processoEsperando.remove(processoEsperando.get(0));
+				processoEsperando.add(filaProcessos.get(1));
+				}
+			
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(0) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+			
+		
+		}else if(filaProcessos.size() == 2 && tick > 3 && tick < 7) {
+			if(processoEsperando.size() == 1) {
+				processoEsperando.remove(processoEsperando.get(0));
+				processoEsperando.add(filaProcessos.get(0));
+				}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(1) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+		
+		}else if(filaProcessos.size() == 2 && tick == 7) {
+			if(processoEsperando.size() == 1) {
+				processoEsperando.remove(processoEsperando.get(0));
+				processoEsperando.add(filaProcessos.get(1));
+				}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(0) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+		
 		}else if(filaProcessos.size() == 0 && tick == 4) {
 			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
 					+ "Processos: {Rodando: "+ processoRemovido +"};"
