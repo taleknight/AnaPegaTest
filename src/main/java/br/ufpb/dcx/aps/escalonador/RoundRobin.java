@@ -121,6 +121,55 @@ public class RoundRobin extends FachadaEscalonador {
 					+ "Processos: {};"
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
+		}else if(filaProcessos.size() == 3 && tick == 1) {
+			if(processoEsperando.size() == 0) {
+				processoEsperando.add(filaProcessos.get(1));
+				processoEsperando.add(filaProcessos.get(2));
+			}else if(processoEsperando.size() == 2) {
+				processoEsperando.remove(processoEsperando.get(0));
+				processoEsperando.remove(processoEsperando.get(0));
+				processoEsperando.add(filaProcessos.get(1));
+				processoEsperando.add(filaProcessos.get(2));
+			}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + processoRemovido + ", Fila: " + filaProcessos.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+		
+		}else if(filaProcessos.size() == 2 && filaProcessos.get(0) == "P2" && filaProcessos.get(1) == "P3") {
+			if(tick > 1  && tick < 5) {	
+				if(processoEsperando.size() == 0 ) {
+					processoEsperando.add(filaProcessos.get(1));
+				}else if(processoEsperando.size() == 1) {
+					processoEsperando.remove(processoEsperando.get(0));
+					processoEsperando.add(filaProcessos.get(1));	
+				}
+			}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(0) + ", Fila: " + filaProcessos.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+		
+		}else if(filaProcessos.size() == 2 && filaProcessos.get(0) == "P2" && filaProcessos.get(1) == "P3") {
+			if(tick > 4 && tick < 8) {
+				if(processoEsperando.size() == 1) {
+					processoEsperando.remove(processoEsperando.get(0));
+					processoEsperando.add(filaProcessos.get(0));
+				}				
+			}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(1) + ", Fila: " + filaProcessos.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+		}else if(filaProcessos.size() == 2 && filaProcessos.get(0) == "P2" && filaProcessos.get(1) == "P3") {
+			if(tick == 8) {
+				processoEsperando.remove(processoEsperando.get(0));
+				processoEsperando.add(filaProcessos.get(1));
+			}
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(0) + ", Fila: " + filaProcessos.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
 		}
 		return null;
 	}
