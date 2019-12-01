@@ -1,15 +1,17 @@
 package br.ufpb.dcx.aps.escalonador;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RoundRobin extends FachadaEscalonador {
+	
 
-	private List<String> processoEsperando = new ArrayList<String>();
 	private List<String> filaProcessos = new ArrayList<String>();
+	private List<String> processoEsperando = new ArrayList<String>();
+	private List<String> processoRemovido = new ArrayList<String>();
 	private int quantum = 3;
 	private int tick;
-	private String processoRemovido;
 	
 	public RoundRobin(TipoEscalonador tipoEscalonador) {
 		super(tipoEscalonador);
@@ -23,12 +25,19 @@ public class RoundRobin extends FachadaEscalonador {
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
 		
+		}else if(filaProcessos.size() == 1 && tick == 1 && processoEsperando.size() == 1) {
+			processoEsperando.remove(0);
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(0) + ", Fila: " + processoRemovido.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+			
 		}else if(filaProcessos.size() == 1 && tick > 0) {
 			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
 					+ "Processos: {Rodando: " + filaProcessos.get(0) + "};"
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
-		
+					
 		}else if(filaProcessos.size() == 2 && tick < 4) {
 			
 			if(processoEsperando.size() == 0){
@@ -112,27 +121,13 @@ public class RoundRobin extends FachadaEscalonador {
 		
 		}else if(filaProcessos.size() == 0 && tick == 4) {
 			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
-					+ "Processos: {Rodando: "+ processoRemovido +"};"
+					+ "Processos: {Rodando: "+ processoRemovido.get(0) +"};"
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
 		
 		}else if(filaProcessos.size() == 0) {
 			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
 					+ "Processos: {};"
-					+ "Quantum: " + quantum + ";"
-					+ "Tick: " + tick;
-		}else if(filaProcessos.size() == 3 && tick == 1) {
-			if(processoEsperando.size() == 0) {
-				processoEsperando.add(filaProcessos.get(1));
-				processoEsperando.add(filaProcessos.get(2));
-			}else if(processoEsperando.size() == 2) {
-				processoEsperando.remove(processoEsperando.get(0));
-				processoEsperando.remove(processoEsperando.get(0));
-				processoEsperando.add(filaProcessos.get(1));
-				processoEsperando.add(filaProcessos.get(2));
-			}
-			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
-					+ "Processos: {Rodando: " + processoRemovido + ", Fila: " + filaProcessos.toString() + "};"
 					+ "Quantum: " + quantum + ";"
 					+ "Tick: " + tick;
 		
@@ -184,8 +179,8 @@ public class RoundRobin extends FachadaEscalonador {
 	}
 	
 	public void finalizarProcesso(String nomeProcesso) {
+		processoRemovido.add(nomeProcesso);	
 		filaProcessos.remove(nomeProcesso);
-		processoRemovido = nomeProcesso;
 	}
-
+	
 }
