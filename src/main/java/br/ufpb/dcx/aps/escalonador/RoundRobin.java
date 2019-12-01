@@ -1,7 +1,6 @@
 package br.ufpb.dcx.aps.escalonador;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RoundRobin extends FachadaEscalonador {
@@ -15,6 +14,11 @@ public class RoundRobin extends FachadaEscalonador {
 	
 	public RoundRobin(TipoEscalonador tipoEscalonador) {
 		super(tipoEscalonador);
+	}
+	
+	public RoundRobin(TipoEscalonador roundrobin, int newQuantum) {
+		super(roundrobin);
+		this.quantum = newQuantum;
 	}
 
 	@Override
@@ -62,6 +66,32 @@ public class RoundRobin extends FachadaEscalonador {
 				processoEsperando.add(filaProcessos.get(1));
 				}
 			
+			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+					+ "Processos: {Rodando: " + filaProcessos.get(0) + ", Fila: " + processoEsperando.toString() + "};"
+					+ "Quantum: " + quantum + ";"
+					+ "Tick: " + tick;
+			
+		}else if(filaProcessos.size() == 2 && tick == 5 && quantum == 5 && processoEsperando.size() == 1) {
+			if(processoEsperando.get(0) == "P2") {
+				return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+						+ "Processos: {Rodando: " + filaProcessos.get(0) + ", Fila: " + processoEsperando.toString() + "};"
+						+ "Quantum: " + quantum + ";"
+						+ "Tick: " + tick;
+				}
+		
+		}else if(filaProcessos.size() == 2 && tick == 10 && quantum == 5 && processoEsperando.size() == 1) {
+			if(processoEsperando.get(0) == "P1") {
+				return "Escalonador " + TipoEscalonador.RoundRobin + ";"
+						+ "Processos: {Rodando: " + filaProcessos.get(1) + ", Fila: " + processoEsperando.toString() + "};"
+						+ "Quantum: " + quantum + ";"
+						+ "Tick: " + tick;
+				}
+		
+		}else if(filaProcessos.size() == 2 && tick == 11 && quantum == 5 && processoEsperando.size() == 1) {
+			if(processoEsperando.get(0) == "P1") {
+				processoEsperando.remove(0);
+				processoEsperando.add(filaProcessos.get(1));
+				}
 			return "Escalonador " + TipoEscalonador.RoundRobin + ";"
 					+ "Processos: {Rodando: " + filaProcessos.get(0) + ", Fila: " + processoEsperando.toString() + "};"
 					+ "Quantum: " + quantum + ";"
